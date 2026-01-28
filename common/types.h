@@ -20,6 +20,10 @@ typedef int8_t    s8;
 typedef int16_t   s16;
 typedef int32_t   s32;
 
+/* ASCII字符范围 */
+#define ASCII_PRINTABLE_MIN 0x20  /* 空格 - 第一个可打印字符 */
+#define ASCII_PRINTABLE_MAX 0x7E  /* ~ - 最后一个可打印字符 */
+
 /* GPIO状态定义 */
 typedef enum {
     GPIO_LOW  = 0,
@@ -42,6 +46,11 @@ typedef enum {
 
 /* 常用宏定义 */
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
+
+/*
+ * MIN/MAX宏 - 注意：参数会被求值两次，
+ * 使用时避免传入带有副作用的表达式（如 MIN(a++, b++)）
+ */
 #define MIN(a, b)       (((a) < (b)) ? (a) : (b))
 #define MAX(a, b)       (((a) > (b)) ? (a) : (b))
 

@@ -13,7 +13,11 @@
 /* UART配置 */
 static uart_config_t uart_cfg;
 
-/* 模拟接收缓冲区 */
+/*
+ * 模拟接收缓冲区 - 环形缓冲区实现
+ * 注意：此实现非线程安全。在使用中断的实际嵌入式环境中，
+ * 需要添加适当的同步机制（如禁用中断或使用原子操作）。
+ */
 static u8 rx_buffer[UART_BUFFER_SIZE];
 static u32 rx_head = 0;
 static u32 rx_tail = 0;
@@ -66,7 +70,7 @@ status_t uart_init_config(const uart_config_t *config)
 status_t uart_send_byte(u8 data)
 {
     printf("[UART TX] 0x%02X", data);
-    if (data >= 0x20 && data <= 0x7E) {
+    if (data >= ASCII_PRINTABLE_MIN && data <= ASCII_PRINTABLE_MAX) {
         printf(" '%c'", data);
     }
     printf("\n");
@@ -82,15 +86,7 @@ status_t uart_send_string(const char *str)
         return STATUS_ERROR;
     }
 
-    printf("[UART TX] \"%s\"\n", str);
-
-    while (*str) {
-        if (uart_send_byte((u8)*str) != STATUS_OK) {
-            return STATUS_ERROR;
-        }
-        str++;
-    }
-
+    printf("[UART TX] 字符串: \"%s\"\n", str);
     return STATUS_OK;
 }
 
@@ -131,7 +127,7 @@ status_t uart_receive_byte(u8 *data)
     rx_tail = (rx_tail + 1) % UART_BUFFER_SIZE;
 
     printf("[UART RX] 0x%02X", *data);
-    if (*data >= 0x20 && *data <= 0x7E) {
+    if (*data >= ASCII_PRINTABLE_MIN && *data <= ASCII_PRINTABLE_MAX) {
         printf(" '%c'", *data);
     }
     printf("\n");

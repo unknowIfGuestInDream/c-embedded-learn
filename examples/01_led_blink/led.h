@@ -36,7 +36,7 @@ void led_toggle(void);
 
 /**
  * @brief 获取LED当前状态
- * @return GPIO_HIGH LED亮，GPIO_LOW LED灭
+ * @return GPIO_HIGH 表示LED亮，GPIO_LOW 表示LED灭
  */
 gpio_state_t led_get_state(void);
 

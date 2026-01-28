@@ -52,6 +52,7 @@ gpio_state_t button_read_raw(void)
  * @brief 读取按键状态（带消抖）
  *
  * 通过延时消抖，确保按键状态稳定。
+ * 当两次读取状态不一致时，返回上一次稳定状态。
  */
 gpio_state_t button_read(void)
 {
@@ -68,11 +69,12 @@ gpio_state_t button_read(void)
 
     /* 两次读取状态相同，说明状态稳定 */
     if (state1 == state2) {
+        last_button_state = state1;
         return state1;
     }
 
-    /* 状态不稳定，返回未按下 */
-    return GPIO_HIGH;
+    /* 状态不稳定，返回上一次稳定状态 */
+    return last_button_state;
 }
 
 /**
