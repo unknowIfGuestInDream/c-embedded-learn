@@ -1,0 +1,35 @@
+# 编译输出
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.lib
+*.so
+*.dll
+
+# 可执行文件（示例项目）
+examples/*/main
+
+# IDE和编辑器文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 调试文件
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# 依赖文件
+*.d
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.bak
