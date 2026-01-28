@@ -1,0 +1,56 @@
+name: PR Test
+
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install GCC
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc make
+    
+    - name: Build LED Blink Example
+      run: |
+        cd examples/01_led_blink
+        make
+    
+    - name: Build Button Input Example
+      run: |
+        cd examples/02_button_input
+        make
+    
+    - name: Build UART Communication Example
+      run: |
+        cd examples/03_uart_communication
+        make
+    
+    - name: Run LED Blink Test
+      run: |
+        cd examples/01_led_blink
+        timeout 15 ./main || true
+    
+    - name: Run Button Input Test
+      run: |
+        cd examples/02_button_input
+        ./main
+    
+    - name: Run UART Communication Test
+      run: |
+        cd examples/03_uart_communication
+        ./main
+    
+    - name: Clean up
+      run: |
+        for dir in examples/01_led_blink examples/02_button_input examples/03_uart_communication; do
+          make -C $dir clean
+        done

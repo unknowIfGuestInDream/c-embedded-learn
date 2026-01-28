@@ -1,0 +1,11 @@
+# 代码所有者
+# 以下用户将自动被请求审查涉及这些文件的PR
+
+# 默认所有者
+* @unknowIfGuestInDream
+
+# 示例代码
+/examples/ @unknowIfGuestInDream
+
+# 公共代码
+/common/ @unknowIfGuestInDream
